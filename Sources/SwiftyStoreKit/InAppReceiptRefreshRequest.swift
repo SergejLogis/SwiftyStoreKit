@@ -47,6 +47,10 @@ class InAppReceiptRefreshRequest: NSObject, SKRequestDelegate, InAppRequest {
 
     deinit {
         refreshReceiptRequest.delegate = nil
+
+        // Force background task finish.
+        // There is a bug that background task started by StoreKit is not finished properly after response is received.
+        refreshReceiptRequest.cancel()
     }
 
     init(receiptProperties: [String: Any]? = nil, callback: @escaping RequestCallback) {
